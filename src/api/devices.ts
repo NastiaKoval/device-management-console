@@ -1,5 +1,6 @@
-import axiosInstance from './axios';
 import { Device, DeviceFormValues } from '../types/device';
+
+import axiosInstance from './axios';
 
 export const getDevices = (signal?: AbortSignal) => axiosInstance.get<Device[]>('/devices', { signal }).then((r) => r.data);
 

@@ -1,7 +1,10 @@
 import axios, { type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
-import type { Device } from '@/types/device';
+
 import { DeviceSchema } from '@/types/device';
+
 import seedDevices from './data';
+
+import type { Device } from '@/types/device';
 
 const store: Device[] = [...seedDevices];
 

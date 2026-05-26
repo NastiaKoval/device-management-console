@@ -50,6 +50,13 @@ export default tseslint.config(
       '@typescript-eslint/no-shadow': 'error',
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': 'error',
+      'import/order': ['error', {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'type'],
+        pathGroups: [{ pattern: '@/**', group: 'internal' }],
+        pathGroupsExcludedImportTypes: ['type'],
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc', caseInsensitive: true },
+      }],
       'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
       'import/no-extraneous-dependencies': ['error', {
         devDependencies: ['vite.config.ts', '**/*.test.ts', '**/*.spec.ts', '**/*.test.tsx', '**/*.spec.tsx'],

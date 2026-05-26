@@ -1,0 +1,12 @@
+{
+  "Devices": "Devices",
+  "name": "name",
+  "status": "status",
+  "last seen": "last seen",
+  "No devices found.": "No devices found.",
+  "port range": "port range",
+  "edit": "edit",
+  "delete": "delete",
+  "New Device": "New Device",
+  "tags": "tags"
+}
