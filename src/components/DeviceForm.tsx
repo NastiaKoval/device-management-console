@@ -57,7 +57,6 @@ const DeviceForm = ({
       onSubmit={handleSubmit(async (data) => {
         await onSubmit(data);
         await revalidate();
-        setFormMode('view');
       })}
       noValidate
       sx={{ width: 600, margin: '0 auto', padding: '25px' }}
@@ -75,14 +74,6 @@ const DeviceForm = ({
               />
             )}
             {lastSeenAt && (
-            // <TextField
-            //   label={t('device.lastSeenAt')}
-            //   value={new Date(lastSeenAt).toLocaleString()}
-            //   size="small"
-            //   slotProps={{ input: { readOnly: true } }}
-            //   sx={{ width: 220 }}
-            // />
-
               <Typography variant="overline" gutterBottom sx={{ display: 'inline-block' }}>
                 {lastSeenFormatter(lastSeenAt)}
               </Typography>

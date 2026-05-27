@@ -30,7 +30,12 @@
     "deleteDevice": "Failed to delete device. Please try again.",
     "emptyPage": "No devices found.",
     "deviceNotFound": "Device not found",
-    "missingDeviceId": "Missing device id"
+    "missingDeviceId": "Missing device id",
+    "saveError": "Failed to save device. Please try again."
+  },
+
+  "alerts": {
+    "saveSuccess": "Device saved successfully"
   },
   
   "actions": {

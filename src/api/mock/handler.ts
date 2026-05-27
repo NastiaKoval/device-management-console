@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
+import axios, { AxiosError, type InternalAxiosRequestConfig, type AxiosResponse } from 'axios';
 
 import { DeviceSchema } from '@/types/device';
 
@@ -14,24 +14,35 @@ const latency = () => new Promise<void>((resolve) => {
 
 const shouldFail = () => Math.random() < 0.1;
 
-function ok<T>(data: T, status = 200): AxiosResponse<T> {
+function ok<T>(config: InternalAxiosRequestConfig, data: T, status = 200): AxiosResponse<T> {
   return {
     data,
     status,
     statusText: 'OK',
     headers: {},
-    config: {} as InternalAxiosRequestConfig,
+    config,
   };
 }
 
-function mockErr(status: number, message: string): AxiosResponse {
-  return {
+function mockErr(
+  config: InternalAxiosRequestConfig,
+  status: number,
+  message: string,
+): never {
+  const response: AxiosResponse = {
     data: { message },
     status,
     statusText: message,
     headers: {},
-    config: {} as InternalAxiosRequestConfig,
+    config,
   };
+  throw new AxiosError(
+    `Request failed with status code ${String(status)}`,
+    status >= 500 ? AxiosError.ERR_BAD_RESPONSE : AxiosError.ERR_BAD_REQUEST,
+    config,
+    null,
+    response,
+  );
 }
 
 const ROUTE_GET_ALL = /^\/devices$/;
@@ -62,61 +73,61 @@ function installMockHandlers() {
 
     // GET /api/devices
     if (isGetAll) {
-      return ok([...store]);
+      return ok(config, [...store]);
     }
 
     // GET /api/devices/:id
     if (isGetOne) {
       const device = store.find((d) => d.id === withIdMatch[1]);
-      if (!device) return mockErr(404, 'Device not found');
-      return ok({ ...device });
+      if (!device) return mockErr(config, 404, 'Device not found');
+      return ok(config, { ...device });
     }
 
     // POST /api/devices
     if (isPost) {
-      if (shouldFail()) return mockErr(503, 'Service unavailable — simulated failure');
+      if (shouldFail()) return mockErr(config, 503, 'Service unavailable — simulated failure');
       const parsed = DeviceSchema.omit({ id: true, lastSeenAt: true }).safeParse(parseBody(raw));
-      if (!parsed.success) return mockErr(400, parsed.error.message);
+      if (!parsed.success) return mockErr(config, 400, parsed.error.message);
       const device: Device = {
         ...parsed.data,
         id: crypto.randomUUID(),
         lastSeenAt: new Date().toISOString(),
       };
       store.push(device);
-      return ok(device, 201);
+      return ok(config, device, 201);
     }
 
     // PATCH /api/devices/:id
     if (isPatch) {
-      if (shouldFail()) return mockErr(503, 'Service unavailable — simulated failure');
+      if (shouldFail()) return mockErr(config, 503, 'Service unavailable — simulated failure');
       const idx = store.findIndex((d) => d.id === withIdMatch[1]);
-      if (idx === -1) return mockErr(404, 'Device not found');
+      if (idx === -1) return mockErr(config, 404, 'Device not found');
       const schema = DeviceSchema.omit({ id: true, lastSeenAt: true }).partial();
       const parsed = schema.safeParse(parseBody(raw));
-      if (!parsed.success) return mockErr(400, parsed.error.message);
+      if (!parsed.success) return mockErr(config, 400, parsed.error.message);
       const updated: Device = {
         ...store[idx],
         ...parsed.data,
         lastSeenAt: new Date().toISOString(),
       };
       store[idx] = updated;
-      return ok({ ...updated });
+      return ok(config, { ...updated });
     }
 
     // DELETE /api/devices/:id
     if (isDelete) {
-      if (shouldFail()) return mockErr(503, 'Service unavailable — simulated failure');
+      if (shouldFail()) return mockErr(config, 503, 'Service unavailable — simulated failure');
       const idx = store.findIndex((d) => d.id === withIdMatch[1]);
-      if (idx === -1) return mockErr(404, 'Device not found');
+      if (idx === -1) return mockErr(config, 404, 'Device not found');
       store.splice(idx, 1);
-      return ok(null, 204);
+      return ok(config, null, 204);
     }
 
     // Unmatched — fall through to real network
     if (typeof originalAdapter === 'function') {
       return originalAdapter(config);
     }
-    return mockErr(501, 'Not implemented');
+    return mockErr(config, 501, 'Not implemented');
   };
 }
 

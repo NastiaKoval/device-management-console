@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './i18n';
 import { RouterProvider } from 'react-router';
 
+import SnackbarProvider from '@/components/SnackbarProvider';
+
 import router from './router';
 
 const rootEl = document.getElementById('root');
@@ -10,6 +12,8 @@ if (!rootEl) throw new Error('Root element not found');
 
 createRoot(rootEl).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <SnackbarProvider>
+      <RouterProvider router={router} />
+    </SnackbarProvider>
   </StrictMode>,
 );
