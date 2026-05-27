@@ -1,14 +1,19 @@
 import { isAxiosError } from 'axios';
 
 import { getDevice } from '@/api/devices';
+import i18next from '@/i18n';
 
-const deviceLoader = async ({ params, request }: { params: { id: string }; request: Request }) => {
-  const { signal } = request; // automatically cancelled on navigation away
+import type { LoaderFunctionArgs } from 'react-router';
+
+const deviceLoader = async ({ params, request }: LoaderFunctionArgs) => {
+  const { id } = params;
+  if (!id) throw new Error(i18next.t('errors.missingDeviceId'));
+
   try {
-    return await getDevice(params.id, signal);
+    return await getDevice(id, request.signal);
   } catch (err) {
     if (isAxiosError(err) && err.response?.status === 404) {
-      throw new Error('Not found');
+      throw new Error(i18next.t('errors.deviceNotFound'));
     }
     throw err;
   }

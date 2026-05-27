@@ -1,75 +1,131 @@
 import type { Device } from '@/types/device';
 
-type Status = Device['status'];
-
-function makeDevice(
-  name: string,
-  status: Status,
-  ip: string,
-  portRange: [number, number],
-  tags: string[],
-  notes?: string,
-): Device {
-  return {
-    id: crypto.randomUUID(),
-    name,
-    status,
-    ipAddress: ip,
-    portRange,
-    lastSeenAt: new Date(
-      Date.now() - Math.floor(Math.random() * 3 * 24 * 60 * 60 * 1000),
-    ).toISOString(),
-    tags,
-    notes,
-  };
-}
-
 const devices: Device[] = [
-  // online (~20)
-  makeDevice('Core Router Alpha', 'online', '10.0.0.1', [1024, 8080], ['core', 'router']),
-  makeDevice('Core Router Beta', 'online', '10.0.0.2', [1024, 8080], ['core', 'router']),
-  makeDevice('Gateway Primary', 'online', '10.0.1.1', [80, 443], ['gateway']),
-  makeDevice('Gateway Secondary', 'online', '10.0.1.2', [80, 443], ['gateway', 'backup']),
-  makeDevice('API Server 1', 'online', '10.1.0.1', [3000, 4000], ['api', 'server']),
-  makeDevice('API Server 2', 'online', '10.1.0.2', [3000, 4000], ['api', 'server']),
-  makeDevice('API Server 3', 'online', '10.1.0.3', [3000, 4000], ['api', 'server']),
-  makeDevice('DB Primary', 'online', '10.2.0.1', [5432, 5433], ['database', 'primary']),
-  makeDevice('DB Replica 1', 'online', '10.2.0.2', [5432, 5433], ['database', 'replica']),
-  makeDevice('DB Replica 2', 'online', '10.2.0.3', [5432, 5433], ['database', 'replica']),
-  makeDevice('Cache Node A', 'online', '10.3.0.1', [6379, 6380], ['cache', 'redis']),
-  makeDevice('Cache Node B', 'online', '10.3.0.2', [6379, 6380], ['cache', 'redis']),
-  makeDevice('Load Balancer 1', 'online', '10.4.0.1', [80, 8443], ['loadbalancer']),
-  makeDevice('Load Balancer 2', 'online', '10.4.0.2', [80, 8443], ['loadbalancer', 'backup']),
-  makeDevice('Monitoring Agent', 'online', '10.5.0.1', [9090, 9100], ['monitoring']),
-  makeDevice('Log Aggregator', 'online', '10.5.0.2', [5044, 5045], ['logging']),
-  makeDevice('Auth Service', 'online', '10.6.0.1', [8080, 8090], ['auth', 'service']),
-  makeDevice('Mail Relay', 'online', '10.6.0.2', [25, 587], ['mail']),
-  makeDevice('Storage Node 1', 'online', '10.7.0.1', [2049, 2050], ['storage']),
-  makeDevice('Storage Node 2', 'online', '10.7.0.2', [2049, 2050], ['storage']),
+  // online (~20) — seen seconds to a few hours ago
+  {
+    id: 'd01', name: 'Core Router Alpha', status: 'online', ipAddress: '10.0.0.1', portRange: [1024, 8080], tags: ['core', 'router'], lastSeenAt: '2026-05-27T11:59:30.000Z',
+  },
+  {
+    id: 'd02', name: 'Core Router Beta', status: 'online', ipAddress: '10.0.0.2', portRange: [1024, 8080], tags: ['core', 'router'], lastSeenAt: '2026-05-27T11:58:00.000Z',
+  },
+  {
+    id: 'd03', name: 'Gateway Primary', status: 'online', ipAddress: '10.0.1.1', portRange: [80, 443], tags: ['gateway'], lastSeenAt: '2026-05-27T11:55:00.000Z',
+  },
+  {
+    id: 'd04', name: 'Gateway Secondary', status: 'online', ipAddress: '10.0.1.2', portRange: [80, 443], tags: ['gateway', 'backup'], lastSeenAt: '2026-05-27T11:50:00.000Z',
+  },
+  {
+    id: 'd05', name: 'API Server 1', status: 'online', ipAddress: '10.1.0.1', portRange: [3000, 4000], tags: ['api', 'server'], lastSeenAt: '2026-05-27T11:45:00.000Z',
+  },
+  {
+    id: 'd06', name: 'API Server 2', status: 'online', ipAddress: '10.1.0.2', portRange: [3000, 4000], tags: ['api', 'server'], lastSeenAt: '2026-05-27T11:40:00.000Z',
+  },
+  {
+    id: 'd07', name: 'API Server 3', status: 'online', ipAddress: '10.1.0.3', portRange: [3000, 4000], tags: ['api', 'server'], lastSeenAt: '2026-05-27T11:30:00.000Z',
+  },
+  {
+    id: 'd08', name: 'DB Primary', status: 'online', ipAddress: '10.2.0.1', portRange: [5432, 5433], tags: ['database', 'primary'], lastSeenAt: '2026-05-27T11:00:00.000Z',
+  },
+  {
+    id: 'd09', name: 'DB Replica 1', status: 'online', ipAddress: '10.2.0.2', portRange: [5432, 5433], tags: ['database', 'replica'], lastSeenAt: '2026-05-27T10:30:00.000Z',
+  },
+  {
+    id: 'd10', name: 'DB Replica 2', status: 'online', ipAddress: '10.2.0.3', portRange: [5432, 5433], tags: ['database', 'replica'], lastSeenAt: '2026-05-27T10:00:00.000Z',
+  },
+  {
+    id: 'd11', name: 'Cache Node A', status: 'online', ipAddress: '10.3.0.1', portRange: [6379, 6380], tags: ['cache', 'redis'], lastSeenAt: '2026-05-27T09:45:00.000Z',
+  },
+  {
+    id: 'd12', name: 'Cache Node B', status: 'online', ipAddress: '10.3.0.2', portRange: [6379, 6380], tags: ['cache', 'redis'], lastSeenAt: '2026-05-27T09:00:00.000Z',
+  },
+  {
+    id: 'd13', name: 'Load Balancer 1', status: 'online', ipAddress: '10.4.0.1', portRange: [80, 8443], tags: ['loadbalancer'], lastSeenAt: '2026-05-27T08:30:00.000Z',
+  },
+  {
+    id: 'd14', name: 'Load Balancer 2', status: 'online', ipAddress: '10.4.0.2', portRange: [80, 8443], tags: ['loadbalancer', 'backup'], lastSeenAt: '2026-05-27T08:00:00.000Z',
+  },
+  {
+    id: 'd15', name: 'Monitoring Agent', status: 'online', ipAddress: '10.5.0.1', portRange: [9090, 9100], tags: ['monitoring'], lastSeenAt: '2026-05-27T07:30:00.000Z',
+  },
+  {
+    id: 'd16', name: 'Log Aggregator', status: 'online', ipAddress: '10.5.0.2', portRange: [5044, 5045], tags: ['logging'], lastSeenAt: '2026-05-27T07:00:00.000Z',
+  },
+  {
+    id: 'd17', name: 'Auth Service', status: 'online', ipAddress: '10.6.0.1', portRange: [8080, 8090], tags: ['auth', 'service'], lastSeenAt: '2026-05-27T06:30:00.000Z',
+  },
+  {
+    id: 'd18', name: 'Mail Relay', status: 'online', ipAddress: '10.6.0.2', portRange: [25, 587], tags: ['mail'], lastSeenAt: '2026-05-27T06:00:00.000Z',
+  },
+  {
+    id: 'd19', name: 'Storage Node 1', status: 'online', ipAddress: '10.7.0.1', portRange: [2049, 2050], tags: ['storage'], lastSeenAt: '2026-05-27T05:30:00.000Z',
+  },
+  {
+    id: 'd20', name: 'Storage Node 2', status: 'online', ipAddress: '10.7.0.2', portRange: [2049, 2050], tags: ['storage'], lastSeenAt: '2026-05-27T05:00:00.000Z',
+  },
 
-  // offline (~10)
-  makeDevice('Edge Router West', 'offline', '192.168.1.1', [1024, 9000], ['edge', 'router'], 'Scheduled maintenance'),
-  makeDevice('Edge Router East', 'offline', '192.168.1.2', [1024, 9000], ['edge', 'router'], 'Power failure — ticket #4821'),
-  makeDevice('Backup DB', 'offline', '10.2.1.1', [5432, 5433], ['database', 'backup'], 'Decommissioning in progress'),
-  makeDevice('Legacy API Server', 'offline', '10.1.1.1', [8000, 8001], ['api', 'legacy'], 'Replaced by API Server 3'),
-  makeDevice('VPN Concentrator', 'offline', '172.16.0.1', [1194, 1195], ['vpn']),
-  makeDevice('Dev Jump Host', 'offline', '172.16.1.1', [22, 23], ['dev', 'ssh'], 'Suspended — cost saving'),
-  makeDevice('Staging Load Balancer', 'offline', '10.4.1.1', [80, 8443], ['loadbalancer', 'staging']),
-  makeDevice('Archive Storage', 'offline', '10.7.1.1', [2049, 2050], ['storage', 'archive'], 'Disk replacement pending'),
-  makeDevice('Old Mail Server', 'offline', '10.6.1.1', [25, 587], ['mail', 'legacy']),
-  makeDevice('Test Runner Node', 'offline', '10.9.0.1', [8080, 9090], ['ci', 'testing']),
+  // offline (~10) — seen 1–6 days ago
+  {
+    id: 'd21', name: 'Edge Router West', status: 'offline', ipAddress: '192.168.1.1', portRange: [1024, 9000], tags: ['edge', 'router'], lastSeenAt: '2026-05-26T12:00:00.000Z', notes: 'Scheduled maintenance',
+  },
+  {
+    id: 'd22', name: 'Edge Router East', status: 'offline', ipAddress: '192.168.1.2', portRange: [1024, 9000], tags: ['edge', 'router'], lastSeenAt: '2026-05-25T08:00:00.000Z', notes: 'Power failure — ticket #4821',
+  },
+  {
+    id: 'd23', name: 'Backup DB', status: 'offline', ipAddress: '10.2.1.1', portRange: [5432, 5433], tags: ['database', 'backup'], lastSeenAt: '2026-05-24T16:00:00.000Z', notes: 'Decommissioning in progress',
+  },
+  {
+    id: 'd24', name: 'Legacy API Server', status: 'offline', ipAddress: '10.1.1.1', portRange: [8000, 8001], tags: ['api', 'legacy'], lastSeenAt: '2026-05-23T10:00:00.000Z', notes: 'Replaced by API Server 3',
+  },
+  {
+    id: 'd25', name: 'VPN Concentrator', status: 'offline', ipAddress: '172.16.0.1', portRange: [1194, 1195], tags: ['vpn'], lastSeenAt: '2026-05-22T14:00:00.000Z',
+  },
+  {
+    id: 'd26', name: 'Dev Jump Host', status: 'offline', ipAddress: '172.16.1.1', portRange: [22, 23], tags: ['dev', 'ssh'], lastSeenAt: '2026-05-21T09:00:00.000Z', notes: 'Suspended — cost saving',
+  },
+  {
+    id: 'd27', name: 'Staging Load Balancer', status: 'offline', ipAddress: '10.4.1.1', portRange: [80, 8443], tags: ['loadbalancer', 'staging'], lastSeenAt: '2026-05-26T18:00:00.000Z',
+  },
+  {
+    id: 'd28', name: 'Archive Storage', status: 'offline', ipAddress: '10.7.1.1', portRange: [2049, 2050], tags: ['storage', 'archive'], lastSeenAt: '2026-05-25T20:00:00.000Z', notes: 'Disk replacement pending',
+  },
+  {
+    id: 'd29', name: 'Old Mail Server', status: 'offline', ipAddress: '10.6.1.1', portRange: [25, 587], tags: ['mail', 'legacy'], lastSeenAt: '2026-05-24T06:00:00.000Z',
+  },
+  {
+    id: 'd30', name: 'Test Runner Node', status: 'offline', ipAddress: '10.9.0.1', portRange: [8080, 9090], tags: ['ci', 'testing'], lastSeenAt: '2026-05-23T22:00:00.000Z',
+  },
 
-  // degraded (~10)
-  makeDevice('Cache Node C', 'degraded', '10.3.0.3', [6379, 6380], ['cache', 'redis'], 'High memory usage — 94%'),
-  makeDevice('API Server 4', 'degraded', '10.1.0.4', [3000, 4000], ['api', 'server'], 'Elevated error rate'),
-  makeDevice('DB Replica 3', 'degraded', '10.2.0.4', [5432, 5433], ['database', 'replica'], 'Replication lag > 30s'),
-  makeDevice('Storage Node 3', 'degraded', '10.7.0.3', [2049, 2050], ['storage'], 'RAID degraded — one disk failed'),
-  makeDevice('Monitoring Collector', 'degraded', '10.5.0.3', [9090, 9100], ['monitoring'], 'Dropping ~5% of metrics'),
-  makeDevice('Core Switch A', 'degraded', '10.0.2.1', [1024, 2048], ['core', 'network'], 'Port 12 link flapping'),
-  makeDevice('Auth Service Replica', 'degraded', '10.6.0.3', [8080, 8090], ['auth', 'service'], 'Certificate expiring in 3 days'),
-  makeDevice('Log Shipper', 'degraded', '10.5.1.1', [5044, 5045], ['logging'], 'Disk 80% full — logs at risk'),
-  makeDevice('Gateway Tertiary', 'degraded', '10.0.1.3', [80, 443], ['gateway'], 'Intermittent packet loss'),
-  makeDevice('Load Balancer 3', 'degraded', '10.4.0.3', [80, 8443], ['loadbalancer'], 'Health checks failing on 2 backends'),
+  // degraded (~10) — seen minutes to a few hours ago
+  {
+    id: 'd31', name: 'Cache Node C', status: 'degraded', ipAddress: '10.3.0.3', portRange: [6379, 6380], tags: ['cache', 'redis'], lastSeenAt: '2026-05-27T11:50:00.000Z', notes: 'High memory usage — 94%',
+  },
+  {
+    id: 'd32', name: 'API Server 4', status: 'degraded', ipAddress: '10.1.0.4', portRange: [3000, 4000], tags: ['api', 'server'], lastSeenAt: '2026-05-27T11:30:00.000Z', notes: 'Elevated error rate',
+  },
+  {
+    id: 'd33', name: 'DB Replica 3', status: 'degraded', ipAddress: '10.2.0.4', portRange: [5432, 5433], tags: ['database', 'replica'], lastSeenAt: '2026-05-27T11:00:00.000Z', notes: 'Replication lag > 30s',
+  },
+  {
+    id: 'd34', name: 'Storage Node 3', status: 'degraded', ipAddress: '10.7.0.3', portRange: [2049, 2050], tags: ['storage'], lastSeenAt: '2026-05-27T10:30:00.000Z', notes: 'RAID degraded — one disk failed',
+  },
+  {
+    id: 'd35', name: 'Monitoring Collector', status: 'degraded', ipAddress: '10.5.0.3', portRange: [9090, 9100], tags: ['monitoring'], lastSeenAt: '2026-05-27T10:00:00.000Z', notes: 'Dropping ~5% of metrics',
+  },
+  {
+    id: 'd36', name: 'Core Switch A', status: 'degraded', ipAddress: '10.0.2.1', portRange: [1024, 2048], tags: ['core', 'network'], lastSeenAt: '2026-05-27T09:30:00.000Z', notes: 'Port 12 link flapping',
+  },
+  {
+    id: 'd37', name: 'Auth Service Replica', status: 'degraded', ipAddress: '10.6.0.3', portRange: [8080, 8090], tags: ['auth', 'service'], lastSeenAt: '2026-05-27T09:00:00.000Z', notes: 'Certificate expiring in 3 days',
+  },
+  {
+    id: 'd38', name: 'Log Shipper', status: 'degraded', ipAddress: '10.5.1.1', portRange: [5044, 5045], tags: ['logging'], lastSeenAt: '2026-05-27T08:30:00.000Z', notes: 'Disk 80% full — logs at risk',
+  },
+  {
+    id: 'd39', name: 'Gateway Tertiary', status: 'degraded', ipAddress: '10.0.1.3', portRange: [80, 443], tags: ['gateway'], lastSeenAt: '2026-05-27T08:00:00.000Z', notes: 'Intermittent packet loss',
+  },
+  {
+    id: 'd40', name: 'Load Balancer 3', status: 'degraded', ipAddress: '10.4.0.3', portRange: [80, 8443], tags: ['loadbalancer'], lastSeenAt: '2026-05-27T07:30:00.000Z', notes: 'Health checks failing on 2 backends',
+  },
 ];
 
 export default devices;

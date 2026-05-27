@@ -43,9 +43,15 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-explicit-any': 'error',
+      // React event handlers commonly don't use the return value of async callbacks
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
       'react/react-in-jsx-scope': 'off',
       'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
       'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],
+      // TypeScript covers this; defaultProps are not needed with TS optional props
+      'react/require-default-props': 'off',
+      // RHF + MUI require spreading field/params — this pattern is intentional
+      'react/jsx-props-no-spreading': 'off',
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',
       'no-use-before-define': 'off',

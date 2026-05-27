@@ -14,6 +14,6 @@ export const DeviceSchema = z.object({
 
 export type Device = z.infer<typeof DeviceSchema>
 
-// Form-specific schema (id/lastSeenAt are not user-editable)
-export const DeviceFormSchema = DeviceSchema.omit({ id: true, lastSeenAt: true });
+// Form-specific schema (id/status/lastSeenAt are not user-editable)
+export const DeviceFormSchema = DeviceSchema.omit({ id: true, status: true, lastSeenAt: true });
 export type DeviceFormValues = z.infer<typeof DeviceFormSchema>

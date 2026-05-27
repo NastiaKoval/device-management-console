@@ -1,12 +1,43 @@
 {
-  "Devices": "Devices",
-  "name": "name",
-  "status": "status",
-  "last seen": "last seen",
-  "No devices found.": "No devices found.",
-  "port range": "port range",
-  "edit": "edit",
-  "delete": "delete",
-  "New Device": "New Device",
-  "tags": "tags"
+  "device": {
+    "name": "Name",
+    "status": "Status",
+    "lastSeen": "Last Seen",
+    "portRange": "Port Range",
+    "ipAddress": "IP Address",
+    "portMin": "Min Port",
+    "portMax": "Max Port",
+    "tags": "Tags",
+    "tagsHint": "Enter tags separated by commas, 0–10 items",
+    "tagsRule": "1–20 chars, lowercase, unique",
+    "notes": "Notes",
+
+    "statuses": {
+      "online": "Online",
+      "offline": "Offline",
+      "degraded": "Degraded"
+    }
+  },
+
+  "headers": {
+    "devices": "Devices"
+  },
+
+  "errors": {
+    "fetchDevices": "Failed to fetch devices. Please try again.",
+    "createDevice": "Failed to create device. Please try again.",
+    "updateDevice": "Failed to update device. Please try again.",
+    "deleteDevice": "Failed to delete device. Please try again.",
+    "emptyPage": "No devices found.",
+    "deviceNotFound": "Device not found",
+    "missingDeviceId": "Missing device id"
+  },
+  
+  "actions": {
+    "edit": "edit",
+    "cancel": "cancel",
+    "delete": "delete",
+    "save": "save",
+    "add": "Add new device"
+  }
 }
