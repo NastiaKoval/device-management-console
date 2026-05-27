@@ -6,7 +6,30 @@ import seedDevices from './data';
 
 import type { Device } from '@/types/device';
 
-const store: Device[] = [...seedDevices];
+// localStorage store
+
+const STORAGE_KEY = 'mock_devices';
+
+function loadStore(): Device[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [...seedDevices];
+    const parsed = DeviceSchema.array().safeParse(JSON.parse(raw) as unknown);
+    return parsed.success ? parsed.data : [...seedDevices];
+  } catch {
+    return [...seedDevices];
+  }
+}
+
+function saveStore(devices: Device[]): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(devices));
+}
+
+// in-memory store
+
+const store: Device[] = loadStore();
+
+// helpers
 
 const latency = () => new Promise<void>((resolve) => {
   setTimeout(resolve, 400 + Math.random() * 500);
@@ -44,6 +67,8 @@ function mockErr(
     response,
   );
 }
+
+// routing
 
 const ROUTE_GET_ALL = /^\/devices$/;
 const ROUTE_WITH_ID = /^\/devices\/([^/]+)$/;
@@ -96,6 +121,7 @@ function installMockHandlers() {
         status: 'online',
       };
       store.push(device);
+      saveStore(store);
       return ok(config, device, 201);
     }
 
@@ -113,6 +139,7 @@ function installMockHandlers() {
         lastSeenAt: new Date().toISOString(),
       };
       store[idx] = updated;
+      saveStore(store);
       return ok(config, { ...updated });
     }
 
@@ -122,6 +149,7 @@ function installMockHandlers() {
       const idx = store.findIndex((d) => d.id === withIdMatch[1]);
       if (idx === -1) return mockErr(config, 404, 'Device not found');
       store.splice(idx, 1);
+      saveStore(store);
       return ok(config, null, 204);
     }
 
