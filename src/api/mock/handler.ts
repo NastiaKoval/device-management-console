@@ -86,12 +86,14 @@ function installMockHandlers() {
     // POST /api/devices
     if (isPost) {
       if (shouldFail()) return mockErr(config, 503, 'Service unavailable — simulated failure');
-      const parsed = DeviceSchema.omit({ id: true, lastSeenAt: true }).safeParse(parseBody(raw));
+      const parsed = DeviceSchema
+        .omit({ id: true, lastSeenAt: true, status: true }).safeParse(parseBody(raw));
       if (!parsed.success) return mockErr(config, 400, parsed.error.message);
       const device: Device = {
         ...parsed.data,
         id: crypto.randomUUID(),
         lastSeenAt: new Date().toISOString(),
+        status: 'online',
       };
       store.push(device);
       return ok(config, device, 201);

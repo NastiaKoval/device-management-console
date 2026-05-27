@@ -15,7 +15,7 @@ import lastSeenFormatter from '@/helpers/lastSeenFormatter';
 import { DeviceFormSchema, type Device, type DeviceFormValues } from '@/types/device';
 
 interface DeviceFormProps {
-  defaultValues: DeviceFormValues,
+  defaultValues?: DeviceFormValues,
   onSubmit: SubmitHandler<DeviceFormValues>,
   isSubmitting: boolean,
   mode: 'create' | 'edit' | 'view',
@@ -207,7 +207,7 @@ const DeviceForm = ({
           )}
         />
 
-        {
+        {formMode !== 'create' && (
           formMode === 'view' ? (
             <Button variant="outlined" onClick={() => { setFormMode('edit'); }}>
               {t('actions.edit')}
@@ -217,7 +217,8 @@ const DeviceForm = ({
               {t('actions.cancel')}
             </Button>
           )
-        }
+        )}
+
         {formMode !== 'view' && (
           <Button
             type="submit"

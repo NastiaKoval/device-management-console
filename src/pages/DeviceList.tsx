@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Fab } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
@@ -73,6 +74,11 @@ const DevicesList = () => {
         autosizeOnMount
         autosizeOptions={{ includeHeaders: true, includeOutliers: true, expand: true }}
       />
+      <Box sx={{ position: 'fixed', bottom: 56, right: 48 }}>
+        <Fab color="primary" aria-label="add" onClick={() => navigate('/devices/new')}>
+          <AddIcon />
+        </Fab>
+      </Box>
     </Box>
   );
 };
