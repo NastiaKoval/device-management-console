@@ -1,3 +1,4 @@
+import GamepadIcon from '@mui/icons-material/Gamepad';
 import RouterIcon from '@mui/icons-material/Router';
 import { AppProvider, DashboardLayout } from '@toolpad/core';
 
@@ -10,6 +11,7 @@ const navigation = [{ segment: 'devices', title: i18next.t('Devices'), icon: <Ro
 const AppShell = ({ children }: { children: React.ReactNode }) => (
   <AppProvider navigation={navigation}>
     <DashboardLayout
+      branding={{ title: 'Device Management Console', logo: <GamepadIcon /> }}
       slots={{ toolbarActions: LanguageSwitcher }}
     >
       {children}

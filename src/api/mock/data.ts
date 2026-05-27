@@ -17,7 +17,7 @@ function makeDevice(
     ipAddress: ip,
     portRange,
     lastSeenAt: new Date(
-      Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000),
+      Date.now() - Math.floor(Math.random() * 3 * 24 * 60 * 60 * 1000),
     ).toISOString(),
     tags,
     notes,
