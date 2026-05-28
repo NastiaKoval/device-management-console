@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
@@ -27,11 +28,13 @@ const DeviceNew: FC = () => {
   };
 
   return (
-    <DeviceForm
-      mode="create"
-      onSubmit={handleSave}
-      isSubmitting={isSubmitting}
-    />
+    <Box sx={{ width: 600, margin: '0 auto', padding: '25px' }}>
+      <DeviceForm
+        mode="create"
+        onSubmit={handleSave}
+        isSubmitting={isSubmitting}
+      />
+    </Box>
   );
 };
 

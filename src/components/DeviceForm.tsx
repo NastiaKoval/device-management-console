@@ -19,7 +19,7 @@ interface DeviceFormProps {
   onSubmit: SubmitHandler<DeviceFormValues>,
   isSubmitting: boolean,
   mode: 'create' | 'edit' | 'view',
-  // present only in edit mode
+  // present only in edit/view mode
   status?: Device['status'],
   lastSeenAt?: Device['lastSeenAt'],
 }
@@ -59,11 +59,11 @@ const DeviceForm = ({
         await revalidate();
       })}
       noValidate
-      sx={{ width: 600, margin: '0 auto', padding: '25px' }}
+      sx={{ padding: '25px 0' }}
     >
       <Stack spacing={3}>
 
-        {/* ── readonly: status + lastSeenAt (edit mode only) ── */}
+        {/* ── readonly: status + lastSeenAt (edit/view mode only) ── */}
         {(status ?? lastSeenAt) && (
           <Stack direction="row" spacing={2} alignItems="center">
             {status && (
@@ -178,7 +178,6 @@ const DeviceForm = ({
                   {...params}
                   label={t('device.tags')}
                   placeholder={t('device.tagsHint')}
-                  error={!!errors.tags}
                   helperText={
                     errors.tags?.message
                     ?? errors.tags?.root?.message

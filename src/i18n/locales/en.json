@@ -35,13 +35,17 @@
   },
 
   "alerts": {
-    "saveSuccess": "Device saved successfully"
+    "saveSuccess": "Device saved successfully",
+    "deleteSuccess": "Device deleted successfully"
   },
   
   "actions": {
     "edit": "edit",
     "cancel": "cancel",
-    "delete": "delete",
+    "delete": "Delete device",
+    "confirmDelete": "Are you sure you want to delete this device?",
+    "confirm": "confirm",
+    "decline": "decline",
     "save": "save",
     "add": "Add new device"
   }
