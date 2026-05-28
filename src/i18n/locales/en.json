@@ -39,6 +39,10 @@
     "deleteSuccess": "Device deleted successfully"
   },
   
+  "toolbar": {
+    "searchPlaceholder": "Search by name, IP or tag…"
+  },
+
   "actions": {
     "edit": "edit",
     "cancel": "cancel",

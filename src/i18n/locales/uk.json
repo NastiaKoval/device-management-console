@@ -36,6 +36,10 @@
     "deleteSuccess": "Пристрій успішно видалено"
   },
 
+  "toolbar": {
+    "searchPlaceholder": "Пошук за назвою, IP або тегом…"
+  },
+
   "actions": {
     "edit": "редагувати",
     "cancel": "скасувати",

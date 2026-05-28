@@ -45,6 +45,8 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'error',
       // React event handlers commonly don't use the return value of async callbacks
       '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
+      // Allow `void navigate(...)` / `void somePromise` to explicitly discard Promises
+      '@typescript-eslint/no-confusing-void-expression': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
       'react/jsx-filename-extension': ['error', { extensions: ['.tsx'] }],

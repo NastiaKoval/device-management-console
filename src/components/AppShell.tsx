@@ -11,7 +11,7 @@ const navigation = [{ segment: 'devices', title: i18next.t('Devices'), icon: <Ro
 const AppShell = ({ children }: { children: React.ReactNode }) => (
   <AppProvider navigation={navigation}>
     <DashboardLayout
-      branding={{ title: 'Device Management Console', logo: <GamepadIcon /> }}
+      branding={{ title: 'Device Management Console', logo: <GamepadIcon color="primary" /> }}
       slots={{ toolbarActions: LanguageSwitcher }}
     >
       {children}
