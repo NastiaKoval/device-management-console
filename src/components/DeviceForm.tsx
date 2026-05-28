@@ -6,13 +6,13 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useRevalidator } from 'react-router';
 
 import lastSeenFormatter from '@/helpers/lastSeenFormatter';
-import { DeviceFormSchema, type Device, type DeviceFormValues } from '@/types/device';
+import { createDeviceFormSchema, type Device, type DeviceFormValues } from '@/types/device';
 
 interface DeviceFormProps {
   defaultValues?: DeviceFormValues,
@@ -41,14 +41,24 @@ const DeviceForm = ({
   const { t } = useTranslation();
   const { revalidate } = useRevalidator();
   const [formMode, setFormMode] = useState(mode);
+  const [tagInputError, setTagInputError] = useState('');
+
+  const schema = useMemo(() => createDeviceFormSchema(t), [t]);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<DeviceFormValues>({
-    defaultValues,
-    resolver: zodResolver(DeviceFormSchema),
+    defaultValues: {
+      name: '',
+      ipAddress: '',
+      portRange: [1, 1],
+      tags: [],
+      notes: '',
+      ...defaultValues,
+    },
+    resolver: zodResolver(schema),
   });
 
   return (
@@ -164,7 +174,26 @@ const DeviceForm = ({
               disabled={formMode === 'view'}
               options={[]}
               value={field.value}
-              onChange={(_, value) => { field.onChange(value); }}
+              onChange={(_, newValue) => {
+                if (newValue.length > field.value.length) {
+                  const added = newValue[newValue.length - 1];
+                  if (added.length > 20) {
+                    setTagInputError(t('validation.tagLength'));
+                    return;
+                  }
+                  if (!/^[a-z]+$/.test(added)) {
+                    setTagInputError(t('validation.tagFormat'));
+                    return;
+                  }
+                  if (field.value.includes(added)) {
+                    setTagInputError(t('validation.tagDuplicate'));
+                    return;
+                  }
+                }
+                setTagInputError('');
+                field.onChange(newValue);
+              }}
+              onInputChange={() => { setTagInputError(''); }}
               renderTags={(value, getTagProps) => value.map((tag, index) => (
                 <Chip
                   label={tag}
@@ -178,10 +207,12 @@ const DeviceForm = ({
                   {...params}
                   label={t('device.tags')}
                   placeholder={t('device.tagsHint')}
+                  error={!!tagInputError || !!errors.tags}
                   helperText={
-                    errors.tags?.message
-                    ?? errors.tags?.root?.message
-                    ?? t('device.tagsRule')
+                    tagInputError
+                    || errors.tags?.message
+                    || errors.tags?.root?.message
+                    || t('device.tagsRule')
                   }
                 />
               )}

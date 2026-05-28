@@ -45,6 +45,18 @@
     "searchPlaceholder": "Search by name, IP or tag…"
   },
 
+  "validation": {
+    "nameMin": "Name must be at least {{count}} characters",
+    "nameMax": "Name must be at most {{count}} characters",
+    "ipAddress": "Must be a valid IPv4 address",
+    "portRange": "Min port must be less than max port",
+    "tagFormat": "Tags must be lowercase letters only",
+    "tagLength": "Each tag must be at most 20 characters",
+    "tagsMax": "Cannot have more than {{count}} tags",
+    "notesMax": "Notes must be at most {{count}} characters",
+    "tagDuplicate": "Tag already exists"
+  },
+
   "actions": {
     "edit": "edit",
     "cancel": "cancel",

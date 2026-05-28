@@ -14,51 +14,9 @@ import {
 import GridToolbar, { type StatusFilter } from '@/components/GridToolbar';
 import { STATUS_TO_CHIP, STATUSES } from '@/helpers/constants';
 import lastSeenFormatter from '@/helpers/lastSeenFormatter';
-import i18next from '@/i18n';
 
 import type devicesLoader from '@/router/loaders/devicesLoader';
 import type { Device } from '@/types/device';
-
-const columns: GridColDef<Device>[] = [
-  {
-    field: 'name',
-    headerName: i18next.t('device.name'),
-    resizable: false,
-  },
-  {
-    field: 'status',
-    headerName: i18next.t('device.status'),
-    renderCell:
-      (params) => <Chip label={params.row.status} color={STATUS_TO_CHIP[params.row.status]} />,
-    resizable: false,
-  },
-  {
-    field: 'ipAddress',
-    headerName: i18next.t('device.ipAddress'),
-    resizable: false,
-  },
-  {
-    field: 'portRange',
-    headerName: i18next.t('device.portRange'),
-    description: '1 - 65535',
-    valueFormatter: (value: Device['portRange']) => value.join(' – '),
-    resizable: false,
-    sortable: false,
-  },
-  {
-    field: 'lastSeenAt',
-    headerName: i18next.t('device.lastSeen'),
-    resizable: false,
-    valueFormatter: (lastSeen: Device['lastSeenAt']) => lastSeenFormatter(lastSeen),
-  },
-  {
-    field: 'tags',
-    headerName: i18next.t('device.tags'),
-    valueFormatter: (value: Device['tags']) => value.join(', '),
-    resizable: false,
-    sortable: false,
-  },
-];
 
 const toStatusFilter = (v: string): StatusFilter => {
   if (STATUSES.has(v as Device['status'])) return v as Device['status'];
@@ -69,6 +27,44 @@ const DeviceListContent = ({ devices }: { devices: Device[] }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const columns = useMemo<GridColDef<Device>[]>(() => [
+    {
+      field: 'name', headerName: t('device.name'), resizable: false, flex: 1,
+    },
+    {
+      field: 'status',
+      headerName: t('device.status'),
+      renderCell: (params) => (
+        <Chip label={params.row.status} color={STATUS_TO_CHIP[params.row.status]} />
+      ),
+      resizable: false,
+    },
+    {
+      field: 'ipAddress', headerName: t('device.ipAddress'), resizable: false,
+    },
+    {
+      field: 'portRange',
+      headerName: t('device.portRange'),
+      description: '1 - 65535',
+      valueFormatter: (value: Device['portRange']) => value.join(' – '),
+      resizable: false,
+      sortable: false,
+    },
+    {
+      field: 'lastSeenAt',
+      headerName: t('device.lastSeen'),
+      resizable: false,
+      valueFormatter: (lastSeen: Device['lastSeenAt']) => lastSeenFormatter(lastSeen),
+    },
+    {
+      field: 'tags',
+      headerName: t('device.tags'),
+      valueFormatter: (value: Device['tags']) => value.join(', '),
+      resizable: false,
+      sortable: false,
+    },
+  ], [t]);
 
   const search = searchParams.get('search') ?? '';
   const statusFilter = toStatusFilter(searchParams.get('status') ?? '');

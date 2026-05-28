@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import type { TFunction } from 'i18next';
+
 export const DeviceSchema = z.object({
   id: z.string(),
   name: z.string().min(3).max(60),
@@ -14,6 +16,22 @@ export const DeviceSchema = z.object({
 
 export type Device = z.infer<typeof DeviceSchema>
 
-// Form-specific schema (id/status/lastSeenAt are not user-editable)
-export const DeviceFormSchema = DeviceSchema.omit({ id: true, status: true, lastSeenAt: true });
-export type DeviceFormValues = z.infer<typeof DeviceFormSchema>
+export const createDeviceFormSchema = (t: TFunction) => z.object({
+  name: z.string()
+    .min(3, t('validation.nameMin', { count: 3 }))
+    .max(60, t('validation.nameMax', { count: 60 })),
+  ipAddress: z.string().ip({ version: 'v4', message: t('validation.ipAddress') }),
+  portRange: z.tuple([
+    z.number().int().min(1).max(65535),
+    z.number().int().min(1).max(65535),
+  ]).refine(([min, max]) => min < max, { message: t('validation.portRange') }),
+  tags: z.array(
+    z.string()
+      .min(1)
+      .max(20, t('validation.tagLength'))
+      .regex(/^[a-z]+$/, t('validation.tagFormat')),
+  ).max(10, t('validation.tagsMax', { count: 10 })),
+  notes: z.string().max(500, t('validation.notesMax', { count: 500 })).optional(),
+});
+
+export type DeviceFormValues = z.infer<ReturnType<typeof createDeviceFormSchema>>
