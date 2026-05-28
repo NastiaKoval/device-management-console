@@ -48,6 +48,7 @@ const DeviceForm = ({
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<DeviceFormValues>({
     defaultValues: {
@@ -66,7 +67,11 @@ const DeviceForm = ({
       component="form"
       onSubmit={handleSubmit(async (data) => {
         await onSubmit(data);
+        reset(data);
         await revalidate();
+        if (formMode === 'edit') {
+          setFormMode('view');
+        }
       })}
       noValidate
       sx={{ padding: '25px 0' }}
@@ -243,7 +248,7 @@ const DeviceForm = ({
               {t('actions.edit')}
             </Button>
           ) : (
-            <Button variant="text" onClick={() => { setFormMode('view'); }}>
+            <Button variant="text" onClick={() => { reset(); setFormMode('view'); }}>
               {t('actions.cancel')}
             </Button>
           )
