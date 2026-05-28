@@ -1,22 +1,22 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import i18n from '@/i18n';
 
 const LanguageSwitcher: FC = () => {
-  const handleLanguageChange = (lang: string) => {
+  const [lang, setLang] = useState(i18n.language);
+
+  const handleChange = (_: React.MouseEvent, newLang: string | null) => {
+    if (!newLang) return;
+    setLang(newLang);
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18n.changeLanguage(lang);
+    i18n.changeLanguage(newLang);
   };
 
   return (
-    <ToggleButtonGroup>
-      <ToggleButton value="en" onClick={() => { handleLanguageChange('en'); }}>
-        EN
-      </ToggleButton>
-      <ToggleButton value="uk" onClick={() => { handleLanguageChange('uk'); }}>
-        UK
-      </ToggleButton>
+    <ToggleButtonGroup exclusive value={lang} onChange={handleChange} size="small">
+      <ToggleButton value="en">EN</ToggleButton>
+      <ToggleButton value="uk">UK</ToggleButton>
     </ToggleButtonGroup>
   );
 };
