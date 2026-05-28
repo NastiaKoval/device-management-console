@@ -4,7 +4,12 @@ import Chip from '@mui/material/Chip';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router';
+import {
+  Await,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 
 import GridToolbar, { type StatusFilter } from '@/components/GridToolbar';
 import { STATUS_TO_CHIP, STATUSES } from '@/helpers/constants';
@@ -13,8 +18,6 @@ import i18next from '@/i18n';
 
 import type devicesLoader from '@/router/loaders/devicesLoader';
 import type { Device } from '@/types/device';
-
-// columns (defined outside component — no re-creation on re-render)
 
 const columns: GridColDef<Device>[] = [
   {
@@ -58,23 +61,18 @@ const columns: GridColDef<Device>[] = [
   },
 ];
 
-// helpers
-
 const toStatusFilter = (v: string): StatusFilter => {
   if (STATUSES.has(v as Device['status'])) return v as Device['status'];
   return '';
 };
 
-const DeviceList = () => {
+const DeviceListContent = ({ devices }: { devices: Device[] }) => {
   const { t } = useTranslation();
-  const devices = useLoaderData<typeof devicesLoader>();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get('search') ?? '';
   const statusFilter = toStatusFilter(searchParams.get('status') ?? '');
-
-  // URL writers
 
   const handleParamChange = useCallback((param: 'search' | 'status', value: string) => {
     setSearchParams(
@@ -87,8 +85,6 @@ const DeviceList = () => {
       { replace: true },
     );
   }, [setSearchParams]);
-
-  // client-side filtering
 
   const filteredDevices = useMemo(() => devices.filter((d) => {
     if (statusFilter && d.status !== statusFilter) return false;
@@ -138,6 +134,16 @@ const DeviceList = () => {
         </Fab>
       </Box>
     </Box>
+  );
+};
+
+const DeviceList = () => {
+  const { devices } = useLoaderData<typeof devicesLoader>();
+
+  return (
+    <Await resolve={devices}>
+      {(resolved: Device[]) => <DeviceListContent devices={resolved} />}
+    </Await>
   );
 };
 
