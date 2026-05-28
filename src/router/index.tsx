@@ -24,6 +24,7 @@ const router = createBrowserRouter([
         path: 'devices',
         element: <Suspense fallback={<DeviceListSkeleton />}><DeviceList /></Suspense>,
         loader: devicesLoader, // calls getDevices(), returns Device[]
+        hydrateFallbackElement: <DeviceListSkeleton />,
       },
       {
         path: 'devices/new',
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
         path: 'devices/:id',
         element: <Suspense fallback={<CircularProgress />}><DeviceDetailed /></Suspense>,
         loader: deviceLoader, // calls getDevice(id), throws 404 response if not found
+        hydrateFallbackElement: <CircularProgress />,
       },
     ],
   },
