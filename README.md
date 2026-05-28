@@ -35,6 +35,8 @@ Reason: zero service-worker setup, works in all environments including vite prev
 - PATCH /api/devices/:id
 - DELETE /api/devices/:id
 
+All device data is persisted to `localStorage` under the key `mock_devices`. On first load the store is seeded with 40 mock devices; subsequent page reloads and refreshes preserve any changes made through the UI.
+
 ## Global state — React Context
 Uses for shared state for Snackbar messages
 
