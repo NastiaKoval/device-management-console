@@ -6,8 +6,8 @@ export const getDevices = (signal?: AbortSignal) => axiosInstance.get<Device[]>(
 
 export const getDevice = (id: string, signal?: AbortSignal) => axiosInstance.get<Device>(`/devices/${id}`, { signal }).then((r) => r.data);
 
-export const createDevice = (data: DeviceFormValues) => axiosInstance.post<Device>('/devices', data).then((r) => r.data);
+export const createDevice = (data: DeviceFormValues, signal?: AbortSignal) => axiosInstance.post<Device>('/devices', data, { signal }).then((r) => r.data);
 
-export const updateDevice = (id: string, data: Partial<DeviceFormValues>) => axiosInstance.patch<Device>(`/devices/${id}`, data).then((r) => r.data);
+export const updateDevice = (id: string, data: Partial<DeviceFormValues>, signal?: AbortSignal) => axiosInstance.patch<Device>(`/devices/${id}`, data, { signal }).then((r) => r.data);
 
-export const deleteDevice = (id: string) => axiosInstance.delete(`/devices/${id}`);
+export const deleteDevice = (id: string, signal?: AbortSignal) => axiosInstance.delete(`/devices/${id}`, { signal });

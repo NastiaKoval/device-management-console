@@ -13,7 +13,7 @@ const deviceLoader = async ({ params, request }: LoaderFunctionArgs) => {
     return await getDevice(id, request.signal);
   } catch (err) {
     if (isAxiosError(err) && err.response?.status === 404) {
-      throw new Error(i18next.t('errors.deviceNotFound'));
+      throw Object.assign(new Error(i18next.t('errors.deviceNotFound')), { status: 404 });
     }
     throw err;
   }

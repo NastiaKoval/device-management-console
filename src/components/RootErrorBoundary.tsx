@@ -2,12 +2,15 @@ import { Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
 
+type RouteError = Error & { status?: number };
+
 const RootErrorBoundary = () => {
   const { t } = useTranslation();
-  const error = useRouteError() as Error;
+  const error = useRouteError() as RouteError;
   const navigate = useNavigate();
 
-  const message = isRouteErrorResponse(error) && error.status === 404 ? t('errors.notFound') : (error.message || t('errors.unexpectedError'));
+  const is404 = (isRouteErrorResponse(error) && error.status === 404) || error.status === 404;
+  const message = is404 ? t('errors.deviceNotFound') : (error.message || t('errors.unexpectedError'));
 
   return (
     <div style={{
@@ -20,9 +23,15 @@ const RootErrorBoundary = () => {
     }}
     >
       <Typography variant="h5">{message}</Typography>
-      <Button variant="contained" onClick={async () => navigate('/')}>
-        {t('actions.goHome')}
-      </Button>
+      {is404 ? (
+        <Button variant="contained" onClick={async () => navigate('/devices')}>
+          {t('actions.goToDevices')}
+        </Button>
+      ) : (
+        <Button variant="contained" onClick={async () => navigate('/')}>
+          {t('actions.goHome')}
+        </Button>
+      )}
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import { Box } from '@mui/material';
-import { FC, useState } from 'react';
+import {
+  FC, useEffect, useRef, useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoaderData, useNavigate } from 'react-router';
 
@@ -16,13 +18,17 @@ const DeviceDetailed: FC = () => {
   const { showSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   const navigate = useNavigate();
 
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
+
   const handleSave = async (values: DeviceFormValues) => {
+    abortRef.current = new AbortController();
     setIsSubmitting(true);
     try {
-      await updateDevice(device.id, values);
+      await updateDevice(device.id, values, abortRef.current.signal);
       showSnackbar(t('alerts.saveSuccess'), 'success');
     } catch {
       showSnackbar(t('errors.updateDevice'), 'error');
@@ -32,9 +38,10 @@ const DeviceDetailed: FC = () => {
   };
 
   const handleDelete = async () => {
+    abortRef.current = new AbortController();
     setIsDeleting(true);
     try {
-      await deleteDevice(device.id);
+      await deleteDevice(device.id, abortRef.current.signal);
       showSnackbar(t('alerts.deleteSuccess'), 'success');
       await navigate('/devices');
     } catch {

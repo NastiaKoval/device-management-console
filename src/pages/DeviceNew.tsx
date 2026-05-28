@@ -1,5 +1,7 @@
 import { Box } from '@mui/material';
-import { FC, useState } from 'react';
+import {
+  FC, useEffect, useRef, useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -13,11 +15,15 @@ const DeviceNew: FC = () => {
   const { showSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
 
   const handleSave = async (values: DeviceFormValues) => {
+    abortRef.current = new AbortController();
     setIsSubmitting(true);
     try {
-      const newDevice = await createDevice(values);
+      const newDevice = await createDevice(values, abortRef.current.signal);
       showSnackbar(t('alerts.saveSuccess'), 'success');
       await navigate(`/devices/${newDevice.id}`);
     } catch {

@@ -67,6 +67,7 @@
     "save": "save",
     "add": "Add new device",
     "reload": "reload",
-    "goHome": "Go to Home"
+    "goHome": "Go to Home",
+    "goToDevices": "Back to Devices"
   }
 }
