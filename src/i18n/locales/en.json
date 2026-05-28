@@ -32,7 +32,8 @@
     "deviceNotFound": "Device not found",
     "missingDeviceId": "Missing device id",
     "saveError": "Failed to save device. Please try again.",
-    "unexpectedError": "An unexpected error occurred. Please try again."
+    "unexpectedError": "An unexpected error occurred. Please try again.",
+    "notFound": "Page not found"
   },
 
   "alerts": {

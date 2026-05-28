@@ -1,10 +1,13 @@
 import { Button, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
 
 const RootErrorBoundary = () => {
   const { t } = useTranslation();
+  const error = useRouteError() as Error;
   const navigate = useNavigate();
+
+  const message = isRouteErrorResponse(error) && error.status === 404 ? t('errors.notFound') : (error.message || t('errors.unexpectedError'));
 
   return (
     <div style={{
@@ -16,7 +19,7 @@ const RootErrorBoundary = () => {
       gap: 16,
     }}
     >
-      <Typography variant="h5">{t('errors.unexpectedError')}</Typography>
+      <Typography variant="h5">{message}</Typography>
       <Button variant="contained" onClick={async () => navigate('/')}>
         {t('actions.goHome')}
       </Button>
