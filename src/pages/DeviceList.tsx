@@ -24,7 +24,6 @@ const columns: GridColDef<Device>[] = [
     field: 'name',
     headerName: i18next.t('device.name'),
     resizable: false,
-    flex: 1,
   },
   {
     field: 'status',
@@ -122,6 +121,7 @@ const DeviceListContent = ({ devices }: { devices: Device[] }) => {
         disableColumnSelector
         autosizeOnMount
         autosizeOptions={{ includeHeaders: true, includeOutliers: true, expand: true }}
+        localeText={{ noRowsLabel: t('errors.emptyPage') }}
       />
 
       <Box sx={{ position: 'fixed', bottom: 56, right: 48 }}>

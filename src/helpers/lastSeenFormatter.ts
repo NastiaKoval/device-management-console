@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next from '@/i18n';
 
 const lastSeenFormatter = (lastSeen: string) => {
   const rtf = new Intl.RelativeTimeFormat(i18next.language, { style: 'short' });

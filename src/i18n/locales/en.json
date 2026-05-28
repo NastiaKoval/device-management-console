@@ -28,10 +28,11 @@
     "createDevice": "Failed to create device. Please try again.",
     "updateDevice": "Failed to update device. Please try again.",
     "deleteDevice": "Failed to delete device. Please try again.",
-    "emptyPage": "No devices found.",
+    "emptyPage": "No devices found",
     "deviceNotFound": "Device not found",
     "missingDeviceId": "Missing device id",
-    "saveError": "Failed to save device. Please try again."
+    "saveError": "Failed to save device. Please try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
   },
 
   "alerts": {
@@ -51,6 +52,8 @@
     "confirm": "confirm",
     "decline": "decline",
     "save": "save",
-    "add": "Add new device"
+    "add": "Add new device",
+    "reload": "reload",
+    "goHome": "Go to Home"
   }
 }

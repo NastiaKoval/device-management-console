@@ -2,7 +2,7 @@ import GamepadIcon from '@mui/icons-material/Gamepad';
 import RouterIcon from '@mui/icons-material/Router';
 import { AppProvider, DashboardLayout } from '@toolpad/core';
 
-import i18next from '../i18n';
+import i18next from '@/i18n';
 
 import LanguageSwitcher from './LanguageSwitcher';
 

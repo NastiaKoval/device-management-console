@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './i18n';
 import { RouterProvider } from 'react-router';
 
+import ErrorBoundary from '@/components/ErrorBoundary';
 import SnackbarProvider from '@/components/SnackbarProvider';
 
 import router from './router';
@@ -12,8 +13,10 @@ if (!rootEl) throw new Error('Root element not found');
 
 createRoot(rootEl).render(
   <StrictMode>
-    <SnackbarProvider>
-      <RouterProvider router={router} />
-    </SnackbarProvider>
+    <ErrorBoundary>
+      <SnackbarProvider>
+        <RouterProvider router={router} />
+      </SnackbarProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
